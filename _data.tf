@@ -8,7 +8,7 @@ data "aws_ami" "amzn" {
     values = ["Windows_Server-2016-English-Full-ECS_Optimized*"]
   }
 
-  name_regex = ".+-ECS_Optimized$"
+  # name_regex = ".+-ECS_Optimized$"
 }
 
 data "aws_caller_identity" "current" {}
