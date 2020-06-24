@@ -1,5 +1,5 @@
 data "aws_region" "current" {}
-data "aws_ami" "amzn_windows" {
+data "aws_ami" "amzn" {
   most_recent = true
   owners      = ["amazon"]
 
