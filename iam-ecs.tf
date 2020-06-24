@@ -35,5 +35,5 @@ resource "aws_iam_role_policy_attachment" "ecs_ecs" {
 
 resource "aws_iam_role_policy_attachment" "ecs_ecr" {
   role       = aws_iam_role.ecs.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerRegistryReadOnly"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
