@@ -51,3 +51,13 @@ resource "aws_security_group_rule" "all_from_ecs_nodes_world" {
   security_group_id = aws_security_group.ecs_nodes.id
   cidr_blocks       = ["0.0.0.0/0"]
 }
+
+resource "aws_security_group_rule" "rdp_from_vpn" {
+  description       = "VPN Access"
+  type              = "ingress"
+  from_port         = 5432
+  to_port           = 5432
+  protocol          = "tcp"
+  cidr_blocks       = list(local.vpn_cidr)
+  security_group_id = aws_security_group.ecs_nodes.id
+}
