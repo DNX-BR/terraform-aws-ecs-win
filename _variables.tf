@@ -31,8 +31,8 @@ variable "vpc_id" {
 }
 
 variable "vpn_cidr" {
-  default     "10.37.0.0/16"
   description = "VPN cidr"
+  default     = "10.37.0.0/16"
 }
 
 variable "private_subnet_ids" {
