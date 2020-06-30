@@ -55,8 +55,8 @@ resource "aws_security_group_rule" "all_from_ecs_nodes_world" {
 resource "aws_security_group_rule" "rdp_from_vpn" {
   description       = "VPN Access"
   type              = "ingress"
-  from_port         = 5432
-  to_port           = 5432
+  from_port         = 3389
+  to_port           = 3389
   protocol          = "tcp"
   cidr_blocks       = list(var.vpn_cidr)
   security_group_id = aws_security_group.ecs_nodes.id
