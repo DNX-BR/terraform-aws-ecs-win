@@ -31,7 +31,6 @@ variable "vpc_id" {
 }
 
 variable "vpn_cidr" {
-  type        = list(string)
   description = "VPN cidr"
   default     = "10.37.0.0/16"
 }
