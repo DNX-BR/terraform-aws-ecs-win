@@ -1,4 +1,4 @@
-# terraform-aws-ecs
+# terraform-aws-ecs-win
 
 [![Lint Status](https://github.com/DNXLabs/terraform-aws-ecs/workflows/Lint/badge.svg)](https://github.com/DNXLabs/terraform-aws-ecs/actions)
 [![LICENSE](https://img.shields.io/github/license/DNXLabs/terraform-aws-ecs)](https://github.com/DNXLabs/terraform-aws-ecs/blob/master/LICENSE)
@@ -56,6 +56,7 @@ module "ecs_apps" {
 | alarm\_efs\_credits\_low\_threshold | Alerts when EFS credits fell below this number in bytes - default 1000000000000 is 1TB of a maximum of 2.31T of credits (use 0 to disable this alarm) | `number` | `1000000000000` | no |
 | alarm\_sns\_topics | Alarm topics to create and alert on ECS instance metrics | `list` | `[]` | no |
 | alb | Whether to deploy an ALB or not with the cluster | `bool` | `true` | no |
+| alb\_name | Load balance name | `string` | `""` | yes |
 | alb\_internal | Deploys a second internal ALB for private APIs | `bool` | `false` | no |
 | alb\_only | Whether to deploy only an alb and no cloudFront or not with the cluster | `bool` | `false` | no |
 | asg\_max | Max number of instances for autoscaling group | `number` | `4` | no |
