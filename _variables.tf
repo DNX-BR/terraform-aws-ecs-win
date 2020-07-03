@@ -70,6 +70,10 @@ variable "alb" {
   description = "Whether to deploy an ALB or not with the cluster"
 }
 
+variable "alb_name" {
+  description = "Load balance name"
+}
+
 variable "alb_only" {
   default     = false
   description = "Whether to deploy only an alb and no cloudFront or not with the cluster"
