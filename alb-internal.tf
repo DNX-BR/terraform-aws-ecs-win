@@ -4,7 +4,9 @@ resource "aws_lb" "ecs_internal" {
   load_balancer_type = "application"
   internal           = true
   name               = "${var.alb_name}-internal"
-  subnets            = var.private_subnet_ids
+  subnets                    = var.private_subnet_ids
+  drop_invalid_header_fields = var.alb_drop_invalid_header_fields
+  enable_deletion_protection = var.alb_enable_deletion_protection
 
   security_groups = [
     aws_security_group.alb_internal[0].id,
@@ -33,8 +35,8 @@ resource "aws_lb_listener" "ecs_https_internal" {
   load_balancer_arn = aws_lb.ecs_internal[0].arn
   port              = "443"
   protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = var.certificate_arn
+  ssl_policy        = var.alb_internal_ssl_policy
+  certificate_arn   = var.certificate_internal_arn != "" ? var.certificate_internal_arn : var.certificate_arn
 
   default_action {
     type             = "forward"
@@ -48,8 +50,8 @@ resource "aws_lb_listener" "ecs_test_https_internal" {
   load_balancer_arn = aws_lb.ecs_internal[0].arn
   port              = "8443"
   protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = var.certificate_arn
+  ssl_policy        = var.alb_internal_ssl_policy
+  certificate_arn   = var.certificate_internal_arn != "" ? var.certificate_internal_arn : var.certificate_arn
 
   default_action {
     type = "forward"

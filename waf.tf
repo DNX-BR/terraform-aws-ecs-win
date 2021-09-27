@@ -1,4 +1,4 @@
-resource "aws_wafregional_web_acl_association" "alb" {
+resource "aws_wafregional_web_acl_association" "alb" { #windows?
   count = var.alb && ! var.alb_only ? 1 : 0
 
   resource_arn = aws_lb.ecs[0].arn

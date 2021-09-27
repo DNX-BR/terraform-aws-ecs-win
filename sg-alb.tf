@@ -39,7 +39,7 @@ resource "aws_security_group_rule" "http_test_listener_from_world_to_alb" {
 
   description       = "HTTP ECS ALB Test Listener"
   type              = "ingress"
-  from_port         = 8080
+  from_port         = 8080 #8443 - windows?
   to_port           = 8080
   protocol          = "tcp"
   security_group_id = aws_security_group.alb[0].id
