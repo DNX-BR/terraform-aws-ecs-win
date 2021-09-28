@@ -34,18 +34,6 @@ resource "aws_security_group_rule" "https_from_world_to_alb" {
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group_rule" "http_test_listener_from_world_to_alb" {
-  count = var.alb ? 1 : 0
-
-  description       = "HTTP ECS ALB Test Listener"
-  type              = "ingress"
-  from_port         = 8080 #8443 - windows?
-  to_port           = 8080
-  protocol          = "tcp"
-  security_group_id = aws_security_group.alb[0].id
-  cidr_blocks       = ["0.0.0.0/0"]
-}
-
 resource "aws_security_group_rule" "https_test_listener_from_world_to_alb" {
   count = var.alb ? 1 : 0
 

@@ -4,17 +4,18 @@ variable "name" {
   description = "Name of this ECS cluster"
 }
 
-variable "instance_type_1" {
-  description = "Instance type for ECS workers (first priority)"
+variable "instance_types" {
+  description = "Instance type for ECS workers"
+  type        = list(any)
+  default     = []
 }
 
-variable "instance_type_2" {
-  description = "Instance type for ECS workers (second priority)"
+
+variable "architecture" {
+  default     = "x86_64"
+  description = "Architecture to select the AMI, x86_64 or arm64"
 }
 
-variable "instance_type_3" {
-  description = "Instance type for ECS workers (third priority)"
-}
 
 variable "on_demand_percentage" {
   description = "Percentage of on-demand intances vs spot"
@@ -52,12 +53,25 @@ variable "secure_subnet_ids" {
 
 variable "certificate_arn" {}
 
+variable "extra_certificate_arns" {
+  type        = list(string)
+  description = "Extra ACM certificates to add to ALB Listeners"
+  default     = []
+}
+
+
 # == OPTIONAL VARS
 
 variable "security_group_ids" {
   type        = list(string)
   default     = []
   description = "Extra security groups for instances"
+}
+
+variable "security_group_ecs_nodes_outbound_cidrs" {
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+  description = "ECS Nodes outbound allowed CIDRs for the security group."
 }
 
 variable "userdata" {
@@ -67,7 +81,17 @@ variable "userdata" {
 
 variable "alb" {
   default     = true
-  description = "Whether to deploy an ALB or not with the cluster"
+  description = "Whether to deploy an ALB or not with the cluster."
+}
+
+variable "alb_http_listener" {
+  default     = true
+  description = "Whether to enable HTTP listeners"
+}
+
+variable "alb_sg_allow_test_listener" {
+  default     = true
+  description = "Whether to allow world access to the test listeners"
 }
 
 variable "alb_name" {
@@ -81,9 +105,36 @@ variable "alb_only" {
 
 variable "alb_internal" {
   default     = false
-  description = "Deploys a second internal ALB for private APIs"
+  description = "Deploys a second internal ALB for private APIs."
 }
 
+variable "alb_enable_deletion_protection" {
+  default     = false
+  description = "Enable deletion protection for ALBs"
+}
+
+variable "certificate_internal_arn" {
+  default     = ""
+  description = "certificate arn for internal ALB."
+}
+
+variable "alb_ssl_policy" {
+  default     = "ELBSecurityPolicy-2016-08"
+  type        = string
+  description = "The name of the SSL Policy for the listener. Required if protocol is HTTPS or TLS."
+}
+
+variable "alb_internal_ssl_policy" {
+  default     = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
+  type        = string
+  description = "The name of the SSL Policy for the listener. Required if protocol is HTTPS or TLS."
+}
+
+variable "alb_drop_invalid_header_fields" {
+  default     = true
+  type        = bool
+  description = "Indicates whether HTTP headers with invalid header fields are removed by the load balancer (true) or routed to targets (false)."
+}
 variable "asg_min" {
   default     = 1
   description = "Min number of instances for autoscaling group"
@@ -98,6 +149,17 @@ variable "asg_memory_target" {
   default     = 60
   description = "Target average memory percentage to track for autoscaling"
 }
+
+variable "asg_protect_from_scale_in" {
+  default     = false
+  description = "(Optional) Allows setting instance protection. The autoscaling group will not select instances with this setting for termination during scale in events."
+}
+
+variable "asg_target_capacity" {
+  default     = 70
+  description = "Target average capacity percentage for the ECS capacity provider to track for autoscaling."
+}
+
 
 variable "alarm_sns_topics" {
   default     = []
@@ -134,6 +196,12 @@ variable "alarm_alb_400_errors_threshold" {
   default     = 10
 }
 
+variable "alarm_efs_credits_low_threshold" {
+  description = "Alerts when EFS credits fell below this number in bytes - default 1000000000000 is 1TB of a maximum of 2.31T of credits (use 0 to disable this alarm)."
+  default     = 1000000000000
+}
+
+
 variable "target_group_arns" {
   default     = []
   type        = list(string)
@@ -150,7 +218,7 @@ variable "autoscaling_default_cooldown" {
   description = "The amount of time, in seconds, after a scaling activity completes before another scaling activity can start"
 }
 
-# variable "instance_volume_size" {
+# variable "instance_volume_size" { #windows pq ta comentado?
 #   description = "Volume size for docker volume (in GB)"
 #   default     = 22
 # }
@@ -186,4 +254,71 @@ variable "schedule_cron_stop" {
   type        = string
   default     = ""
   description = "Cron expression to define when to trigger a stop of the auto-scaling group. E.g. '0 10 * * *' to stop at 10am GMT time"
+}
+
+variable "backup" {
+  type        = string
+  default     = "true"
+  description = "Assing a backup tag to efs resource - Backup will be performed by AWS Backup."
+}
+
+variable "throughput_mode" {
+  type        = string
+  default     = "bursting"
+  description = "Throughput mode for the file system. Defaults to bursting. Valid values: bursting, provisioned."
+}
+
+variable "provisioned_throughput_in_mibps" {
+  default     = 0
+  description = "The throughput, measured in MiB/s, that you want to provision for the file system."
+}
+
+variable "alarm_prefix" {
+  type        = string
+  description = "String prefix for cloudwatch alarms. (Optional)"
+  default     = "alarm"
+}
+
+variable "kms_key_arn" {
+  type        = string
+  description = "ARN of a KMS Key to use on EFS and EBS volumes"
+  default     = ""
+}
+
+variable "wafv2_enable" {
+  default     = false
+  description = "Deploys WAF V2 with Managed rule groups"
+}
+
+variable "wafv2_managed_rule_groups" {
+  type        = list(string)
+  default     = ["AWSManagedRulesCommonRuleSet"]
+  description = "List of WAF V2 managed rule groups"
+}
+
+variable "create_iam_service_linked_role" {
+  type        = bool
+  default     = false
+  description = "Create iam_service_linked_role for ECS or not."
+}
+
+variable "fargate_only" {
+  default     = false
+  description = "Enable when cluster is only for fargate and does not require ASG/EC2/EFS infrastructure"
+}
+
+variable "ec2_key_enabled" {
+  default     = false
+  description = "Generate a SSH private key and include in launch template of ECS nodes"
+}
+
+variable "vpn_cidr" {
+  default     = ["10.37.0.0/16"]
+  description = "Cidr of VPN to grant ssh access to ECS nodes"
+}
+
+variable "create_efs" {
+  type        = bool
+  default     = true
+  description = "Enables creation of EFS volume for cluster"
 }

@@ -52,6 +52,8 @@ resource "aws_security_group_rule" "all_from_ecs_nodes_world" {
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
+
+#windows
 resource "aws_security_group_rule" "rdp_from_vpn" {
   description       = "VPN Access"
   type              = "ingress"

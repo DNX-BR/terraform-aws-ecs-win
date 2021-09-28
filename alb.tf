@@ -1,10 +1,13 @@
 resource "aws_lb" "ecs" {
   count = var.alb ? 1 : 0
 
-  load_balancer_type = "application"
-  internal           = false
-  name               = var.alb_name
-  subnets            = var.public_subnet_ids
+  load_balancer_type         = "application"
+  internal                   = false
+  name                       = "ecs-${var.name}"
+  subnets                    = var.public_subnet_ids
+  drop_invalid_header_fields = var.alb_drop_invalid_header_fields
+  enable_deletion_protection = var.alb_enable_deletion_protection
+
 
   security_groups = [
     aws_security_group.alb[0].id,
@@ -33,7 +36,7 @@ resource "aws_lb_listener" "ecs_https" {
   load_balancer_arn = aws_lb.ecs[0].arn
   port              = "443"
   protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  ssl_policy        = var.alb_ssl_policy
   certificate_arn   = var.certificate_arn
 
   default_action {
@@ -43,7 +46,7 @@ resource "aws_lb_listener" "ecs_https" {
 }
 
 resource "aws_lb_listener" "ecs_http_redirect" {
-  count = var.alb ? 1 : 0
+  count = var.alb && var.alb_http_listener ? 1 : 0
 
   load_balancer_arn = aws_lb.ecs[0].arn
   port              = "80"
@@ -66,7 +69,7 @@ resource "aws_lb_listener" "ecs_test_https" {
   load_balancer_arn = aws_lb.ecs[0].arn
   port              = "8443"
   protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  ssl_policy        = var.alb_ssl_policy
   certificate_arn   = var.certificate_arn
 
   default_action {
@@ -77,7 +80,7 @@ resource "aws_lb_listener" "ecs_test_https" {
 }
 
 resource "aws_lb_listener" "ecs_test_http_redirect" {
-  count = var.alb ? 1 : 0
+  count = var.alb && var.alb_http_listener ? 1 : 0
 
   load_balancer_arn = aws_lb.ecs[0].arn
   port              = "8080"
@@ -102,9 +105,9 @@ resource "random_string" "alb_prefix" {
 }
 
 resource "aws_lb_target_group" "ecs_default_http" {
-  count = var.alb ? 1 : 0
+  count = var.alb && var.alb_http_listener ? 1 : 0
 
-  name     = substr("${var.alb_name}-default-http-${random_string.alb_prefix.result}", 0, 32)
+  name     = replace(substr("ecs-${var.name}-default-http-${random_string.alb_prefix.result}", 0, 32), "/-+$/", "")
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
@@ -117,7 +120,7 @@ resource "aws_lb_target_group" "ecs_default_http" {
 resource "aws_lb_target_group" "ecs_default_https" {
   count = var.alb ? 1 : 0
 
-  name     = substr("${var.alb_name}-default-https-${random_string.alb_prefix.result}", 0, 32)
+  name     = replace(substr("ecs-${var.name}-default-https-${random_string.alb_prefix.result}", 0, 32), "/-+$/", "")
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id

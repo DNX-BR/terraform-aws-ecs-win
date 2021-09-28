@@ -31,15 +31,19 @@ output "alb_internal_zone_id" {
 }
 
 output "ecs_iam_role_arn" {
-  value = aws_iam_role.ecs.arn
+  value = try(aws_iam_role.ecs[0].arn, "")
 }
 
 output "ecs_iam_role_name" {
-  value = aws_iam_role.ecs.name
+  value = try(aws_iam_role.ecs[0].name, "")
 }
 
 output "ecs_service_iam_role_arn" {
   value = aws_iam_role.ecs_service.arn
+}
+
+output "ecs_codedeploy_iam_role_arn" {
+  value = aws_iam_role.codedeploy_service.arn
 }
 
 output "ecs_service_iam_role_name" {
@@ -90,6 +94,10 @@ output "alb_secgrp_id" {
   value = aws_security_group.alb.*.id
 }
 
-output "alb_cloudfront_key" {
-  value = random_string.alb_cloudfront_key.result
+output "efs_fs_id" {
+  value = try(aws_efs_file_system.ecs[0].id, "")
+}
+
+output "private_key_pem" {
+  value = try(tls_private_key.algorithm[0].private_key_pem, "")
 }

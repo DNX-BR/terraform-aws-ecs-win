@@ -1,12 +1,12 @@
 resource "aws_lb" "ecs_internal" {
   count = var.alb_internal ? 1 : 0
 
-  load_balancer_type = "application"
-  internal           = true
-  name               = "${var.alb_name}-internal"
+  load_balancer_type         = "application"
+  internal                   = true
+  name                       = "ecs-${var.name}-internal"
   subnets                    = var.private_subnet_ids
-  drop_invalid_header_fields = var.alb_drop_invalid_header_fields
-  enable_deletion_protection = var.alb_enable_deletion_protection
+  drop_invalid_header_fields = var.alb_drop_invalid_header_fields #diff
+  enable_deletion_protection = var.alb_enable_deletion_protection #diff
 
   security_groups = [
     aws_security_group.alb_internal[0].id,
@@ -71,7 +71,7 @@ resource "random_string" "alb_internal_prefix" {
 resource "aws_lb_target_group" "ecs_default_https_internal" {
   count = var.alb_internal ? 1 : 0
 
-  name     = substr("${var.alb_name}-int-default-https-${random_string.alb_internal_prefix[0].result}", 0, 32)
+  name     = replace(substr("ecs-${var.name}-int-default-https-${random_string.alb_internal_prefix[0].result}", 0, 32), "/-+$/", "")
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
