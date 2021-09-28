@@ -31,10 +31,6 @@ variable "vpc_id" {
   description = "VPC ID to deploy the ECS cluster"
 }
 
-variable "vpn_cidr" {
-  description = "VPN cidr"
-  default     = "10.37.0.0/16"
-}
 
 variable "private_subnet_ids" {
   type        = list(string)
