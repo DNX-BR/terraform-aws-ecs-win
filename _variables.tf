@@ -298,6 +298,12 @@ variable "create_iam_service_linked_role" {
   description = "Create iam_service_linked_role for ECS or not."
 }
 
+variable "instance_volume_size" {
+  description = "Volume size for docker volume (in GB)."
+  default     = 30
+}
+
+
 variable "ec2_key_enabled" {
   default     = false
   description = "Generate a SSH private key and include in launch template of ECS nodes"
