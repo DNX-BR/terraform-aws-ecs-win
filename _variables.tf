@@ -319,3 +319,9 @@ variable "create_efs" {
   default     = true
   description = "Enables creation of EFS volume for cluster"
 }
+
+variable "create_fsx" {
+  type        = bool
+  default     = true
+  description = "Enables creation of EFS volume for cluster"
+}

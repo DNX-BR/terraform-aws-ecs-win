@@ -98,6 +98,11 @@ output "alb_secgrp_id" {
 #   value = try(aws_efs_file_system.ecs[0].id, "")
 # }
 
+output "fsx_fs_id" {
+  value = try(aws_fsx_windows_file_system.ecs[0].id, "")
+}
+
+
 output "private_key_pem" {
   value = try(tls_private_key.algorithm[0].private_key_pem, "")
 }
