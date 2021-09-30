@@ -1,5 +1,5 @@
 resource "aws_autoscaling_schedule" "ecs_stop" {
-  count                  = !var.fargate_only && var.enable_schedule ? 1 : 0
+  count                  = var.enable_schedule ? 1 : 0
   scheduled_action_name  = "ecs-${var.name}-stop"
   min_size               = 0
   max_size               = 0
@@ -9,7 +9,7 @@ resource "aws_autoscaling_schedule" "ecs_stop" {
 }
 
 resource "aws_autoscaling_schedule" "ecs_start" {
-  count                  = !var.fargate_only && var.enable_schedule ? 1 : 0
+  count                  = var.enable_schedule ? 1 : 0
   scheduled_action_name  = "ecs-${var.name}-start"
   min_size               = var.asg_min
   max_size               = var.asg_max

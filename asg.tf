@@ -1,5 +1,4 @@
 resource "aws_autoscaling_group" "ecs" {
-  count = var.fargate_only ? 0 : 1
   name  = "ecs-${var.name}"
 
   mixed_instances_policy {
@@ -48,7 +47,6 @@ resource "aws_autoscaling_group" "ecs" {
 
 
 resource "aws_ecs_capacity_provider" "ecs_capacity_provider" {
-  count = var.fargate_only ? 0 : 1
   name  = "${var.name}-capacity-provider"
 
   auto_scaling_group_provider {

@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "asg_high_cpu" {
-  count = !var.fargate_only && length(var.alarm_sns_topics) > 0 && var.alarm_asg_high_cpu_threshold != 0 ? 1 : 0
+  count = length(var.alarm_sns_topics) > 0 && var.alarm_asg_high_cpu_threshold != 0 ? 1 : 0
 
   alarm_name                = "${try(data.aws_iam_account_alias.current[0].account_alias, var.alarm_prefix)}-ecs-${var.name}-asg-high-cpu"
   comparison_operator       = "GreaterThanOrEqualToThreshold"

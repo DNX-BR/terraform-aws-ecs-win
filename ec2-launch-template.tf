@@ -1,5 +1,4 @@
 data "template_file" "userdata" {
-  count    = var.fargate_only ? 0 : 1
   template = file("${path.module}/userdata.tpl")
   
   vars = {
@@ -10,7 +9,6 @@ data "template_file" "userdata" {
 }
 
 resource "aws_launch_template" "ecs" {
-  count         = var.fargate_only ? 0 : 1
   name_prefix   = "ecs-${var.name}-"
   image_id      = data.aws_ami.amzn.image_id
   instance_type = var.instance_types[0]
