@@ -14,7 +14,7 @@ resource "aws_launch_template" "ecs" {
   instance_type = var.instance_types[0]
 
   iam_instance_profile {
-    name = aws_iam_instance_profile.ecs[0].name
+    name = aws_iam_instance_profile.ecs.name
   }
 
   block_device_mappings {
@@ -29,7 +29,7 @@ resource "aws_launch_template" "ecs" {
   
   vpc_security_group_ids = concat([aws_security_group.ecs_nodes.id], var.security_group_ids)
 
-  user_data = base64encode(data.template_file.userdata[0].rendered)
+  user_data = base64encode(data.template_file.userdata.rendered)
 
   key_name = var.ec2_key_enabled ? aws_key_pair.generated_key[0].key_name : null
 
