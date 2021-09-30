@@ -60,6 +60,6 @@ resource "aws_security_group_rule" "rdp_from_vpn" {
   from_port         = 3389
   to_port           = 3389
   protocol          = "tcp"
-  cidr_blocks       = list(var.vpn_cidr)
+  cidr_blocks       =  ["0.0.0.0/0"] #list(var.vpn_cidr)
   security_group_id = aws_security_group.ecs_nodes.id
 }
