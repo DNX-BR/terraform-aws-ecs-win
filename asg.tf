@@ -4,7 +4,7 @@ resource "aws_autoscaling_group" "ecs" {
   mixed_instances_policy {
     launch_template {
       launch_template_specification {
-        launch_template_id = aws_launch_template.ecs[0].id
+        launch_template_id = aws_launch_template.ecs.id
         version            = "$Latest"
       }
 
