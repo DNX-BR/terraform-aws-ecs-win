@@ -1,8 +1,8 @@
 resource "aws_fsx_windows_file_system" "ecs" {
-  active_directory_id = aws_directory_service_directory.ecs.id
-  kms_key_id          = aws_kms_key.ecs.arn
+  count       = var.create_fsx ? 1 : 0
+  kms_key_id     = var.kms_key_arn != "" ? var.kms_key_arn : null
   storage_capacity    = 300
-  subnet_ids          = [aws_subnet.ecs.id]
+  subnet_ids      = list(element(var.secure_subnet_ids, count.index))
   throughput_capacity = 1024
 
 
