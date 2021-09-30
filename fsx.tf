@@ -26,7 +26,7 @@ resource "aws_security_group" "fsx" {
   }
 }
 
-resource "aws_security_group_rule" "nfs_from_ecs_to_efs" {
+resource "aws_security_group_rule" "fsx_from_ecs_to_efs" {
   count                    = var.create_fsx ? 1 : 0
   description              = "ECS to FSX"
   type                     = "ingress"
