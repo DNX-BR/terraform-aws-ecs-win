@@ -31,11 +31,11 @@ output "alb_internal_zone_id" {
 }
 
 output "ecs_iam_role_arn" {
-  value = try(aws_iam_role.ecs[0].arn, "")
+  value = try(aws_iam_role.ecs.arn, "")
 }
 
 output "ecs_iam_role_name" {
-  value = try(aws_iam_role.ecs[0].name, "")
+  value = try(aws_iam_role.ecs.name, "")
 }
 
 output "ecs_service_iam_role_arn" {
