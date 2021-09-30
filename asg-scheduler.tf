@@ -4,7 +4,7 @@ resource "aws_autoscaling_schedule" "ecs_stop" {
   min_size               = 0
   max_size               = 0
   desired_capacity       = 0
-  autoscaling_group_name = aws_autoscaling_group.ecs[0].name
+  autoscaling_group_name = aws_autoscaling_group.ecs.name
   recurrence             = var.schedule_cron_stop
 }
 
@@ -14,6 +14,6 @@ resource "aws_autoscaling_schedule" "ecs_start" {
   min_size               = var.asg_min
   max_size               = var.asg_max
   desired_capacity       = var.asg_min
-  autoscaling_group_name = aws_autoscaling_group.ecs[0].name
+  autoscaling_group_name = aws_autoscaling_group.ecs.name
   recurrence             = var.schedule_cron_start
 }
