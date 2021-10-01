@@ -55,7 +55,7 @@ output "ecs_task_iam_role_arn" {
 }
 
 output "ecs_task_iam_role_name" {
-  value = join("",   value = aws_iam_role.ecs_task[0].name)
+  value = join("", aws_iam_role.ecs_task[0].name)
 }
 
 output "ecs_id" {
