@@ -11,6 +11,12 @@ variable "instance_types" {
 }
 
 
+variable "distro" {
+  description= "OS   Distribution"
+  type =    string
+  default = "Windows_Server-2016"
+}
+
 variable "architecture" {
   default     = "x86_64"
   description = "Architecture to select the AMI, x86_64 or arm64"
@@ -223,6 +229,12 @@ variable "instance_volume_size_root" {
   description = "Volume size for root volume (in GB)"
   default     = 50
 }
+
+variable "instance_volume_type" {
+  description = "Volume type for EBS"
+  default     = "gp3"
+}
+
 
 variable "lb_access_logs_bucket" {
   type        = string
