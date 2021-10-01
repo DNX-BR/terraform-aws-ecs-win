@@ -39,7 +39,7 @@ output "ecs_iam_role_name" {
 }
 
 output "ecs_service_iam_role_arn" {
-  value = aws_iam_role.ecs_service[0].arn
+  value = join("",  aws_iam_role.ecs_service[0].arn)
 }
 
 # output "ecs_codedeploy_iam_role_arn" {
@@ -47,15 +47,15 @@ output "ecs_service_iam_role_arn" {
 # }
 
 output "ecs_service_iam_role_name" {
-  value = aws_iam_role.ecs_service[0].name
+  value = join("",  aws_iam_role.ecs_service[0].name)
 }
 
 output "ecs_task_iam_role_arn" {
-  value = aws_iam_role.ecs_task[0].arn
+  value = join("",  aws_iam_role.ecs_task[0].arn)
 }
 
 output "ecs_task_iam_role_name" {
-  value = aws_iam_role.ecs_task[0].name
+  value = join("",   value = aws_iam_role.ecs_task[0].name)
 }
 
 output "ecs_id" {
