@@ -6,6 +6,14 @@ resource "aws_fsx_windows_file_system" "ecs" {
   throughput_capacity = 1024
 
 
+  self_managed_active_directory {
+    dns_ips     = var.fsx_dns_ips
+    domain_name = var.fsx_domain_name
+    password    = var.fsx_password
+    username    = var.fsx_username
+  }
+
+
   tags = {
     Name   = "ecs-${var.name}"
     Backup = var.backup

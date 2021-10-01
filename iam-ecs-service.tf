@@ -1,4 +1,5 @@
 resource "aws_iam_role" "ecs_service" {
+  count = var.create_iam_roles ? 1 : 0
   name = "ecs-service-${var.name}-${data.aws_region.current.name}"
 
   assume_role_policy = <<EOF
@@ -19,6 +20,7 @@ EOF
 }
 
 data "aws_iam_policy_document" "ecs_service_policy" {
+  count = var.create_iam_roles ? 1 : 0
   statement {
     effect    = "Allow"
     resources = ["*"]
@@ -36,7 +38,8 @@ data "aws_iam_policy_document" "ecs_service_policy" {
 }
 
 resource "aws_iam_role_policy" "ecs_service_role_policy" {
+  count = var.create_iam_roles ? 1 : 0
   name   = "ecs_service_role_policy-${var.name}"
-  policy = data.aws_iam_policy_document.ecs_service_policy.json
-  role   = aws_iam_role.ecs_service.id
+  policy = data.aws_iam_policy_document.ecs_service_policy[0].json
+  role   = aws_iam_role.ecs_service[0].id
 }
