@@ -1,4 +1,5 @@
 resource "aws_iam_role" "codedeploy_service" {
+  count = var.create_iam_roles ? 1 : 0
   name = "codedeploy-service-${var.name}-${data.aws_region.current.name}"
 
   assume_role_policy = <<EOF
@@ -19,6 +20,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "codedeploy_service" {
-  role       = aws_iam_role.codedeploy_service.name
+  count = var.create_iam_roles ? 1 : 0
+  role       = aws_iam_role.codedeploy_service[0].name
   policy_arn = "arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS"
 }

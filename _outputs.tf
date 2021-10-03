@@ -39,7 +39,7 @@ output "ecs_iam_role_name" {
 }
 
 output "ecs_service_iam_role_arn" {
-  value = aws_iam_role.ecs_service.arn
+  value = join("",  aws_iam_role.ecs_service[*].arn)
 }
 
 # output "ecs_codedeploy_iam_role_arn" {
@@ -47,15 +47,15 @@ output "ecs_service_iam_role_arn" {
 # }
 
 output "ecs_service_iam_role_name" {
-  value = aws_iam_role.ecs_service.name
+  value = join("",  aws_iam_role.ecs_service[*].name)
 }
 
 output "ecs_task_iam_role_arn" {
-  value = aws_iam_role.ecs_task.arn
+  value = join("",  aws_iam_role.ecs_task[*].arn)
 }
 
 output "ecs_task_iam_role_name" {
-  value = aws_iam_role.ecs_task.name
+  value = join("", aws_iam_role.ecs_task[*].name)
 }
 
 output "ecs_id" {
@@ -95,7 +95,7 @@ output "alb_secgrp_id" {
 }
 
 # output "efs_fs_id" {
-#   value = try(aws_efs_file_system.ecs[0].id, "")
+#   value = try(aws_efs_file_system.ecs[*].id, "")
 # }
 
 output "fsx_fs_id" {

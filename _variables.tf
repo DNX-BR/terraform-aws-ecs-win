@@ -11,6 +11,12 @@ variable "instance_types" {
 }
 
 
+variable "distro" {
+  description= "OS   Distribution"
+  type =    string
+  default = "Windows_Server-2019"
+}
+
 variable "architecture" {
   default     = "x86_64"
   description = "Architecture to select the AMI, x86_64 or arm64"
@@ -224,6 +230,34 @@ variable "instance_volume_size_root" {
   default     = 50
 }
 
+variable "instance_volume_type" {
+  description = "Volume type for EBS"
+  default     = "gp3"
+}
+
+variable "fsx_dns_ips" {
+  description = "List of DNS IPs for FSX Service"
+  default     = []
+}
+
+variable "fsx_domain_name" {
+  description = "Domain name of the FSX Service"
+  default     = ""
+}
+
+variable "fsx_password" {
+  description = "Passowrd of the FSX Servicse"
+  default     = ""
+}
+
+variable "fsx_username"{
+  description = "Username of the FSX Service"
+  default     = ""
+}
+
+
+
+
 variable "lb_access_logs_bucket" {
   type        = string
   default     = ""
@@ -324,4 +358,10 @@ variable "create_fsx" {
   type        = bool
   default     = true
   description = "Enables creation of EFS volume for cluster"
+}
+
+variable "create_iam_roles" {
+  type        = bool
+  default     = true
+  description = "Enables creation of IAM Roles for cluster"
 }
