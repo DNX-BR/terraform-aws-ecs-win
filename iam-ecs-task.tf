@@ -38,11 +38,11 @@ resource "aws_iam_role_policy" "ssm_policy" {
     {
       "Effect": "Allow",
       "Action": [
-        "ssm:GetParameters"
+        "ssm:GetParameters",
         "secretsmanager:GetSecretValue"
       ],
       "Resource": [
-        "arn:aws:ssm:*:*:parameter/*"
+        "arn:aws:ssm:*:*:parameter/*",
         "arn:aws:secretsmanager:us-east-1:300924307056:secret:fsx-Xro5uI"
         ]
     },
