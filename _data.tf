@@ -5,7 +5,7 @@ data "aws_ami" "amzn" {
 
   filter {
     name   = "name"
-    values = [format("%s-%s-", var.distro, "English-Full-ECS_Optimized*")]
+    values = "${var.distro}-English-Full-ECS_Optimized*"
   }
 
   # name_regex = ".+-ECS_Optimized$"
