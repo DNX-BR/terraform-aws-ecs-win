@@ -1,18 +1,33 @@
 resource "aws_iam_role" "ecs_task" {
   count = var.create_iam_roles ? 1 : 0
   name = "ecs-task-${var.name}-${data.aws_region.current.name}"
-
-  assume_role_policy = <<EOF
+  
+  policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
       "Effect": "Allow",
-      "Sid": ""
+      "Action": [
+        "ssm:GetParameters"
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": [
+        "arn:aws:ssm:*:*:parameter/*"
+        "arn:aws:secretsmanager:us-east-1:300924307056:secret:fsx-Xro5uI"
+        ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssmmessages:CreateControlChannel",
+        "ssmmessages:CreateDataChannel",
+        "ssmmessages:OpenControlChannel",
+        "ssmmessages:OpenDataChannel"
+      ],
+      "Resource": [
+        "*"
+      ]
     }
   ]
 }
