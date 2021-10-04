@@ -8,10 +8,11 @@ data "template_file" "userdata" {
   }
 }
 
+
 resource "aws_launch_template" "ecs" {
   name_prefix   = "ecs-${var.name}-"
   image_id      = data.aws_ami.amzn.image_id
-  instance_type = length(var.instance_types) == 0 ? "t2.micro" : var.instance_types[0]
+  instance_type = var.instance_type_1
 
   iam_instance_profile {
     name = aws_iam_instance_profile.ecs.name
@@ -21,18 +22,13 @@ resource "aws_launch_template" "ecs" {
     device_name = "/dev/xvda"
 
     ebs {
-      volume_size = var.instance_volume_size
-      volume_type = var.instance_volume_type
-      encrypted   = true
-      kms_key_id  = var.kms_key_arn != "" ? var.kms_key_arn : null
+      volume_size = var.instance_volume_size_root
     }
   }
   
-  vpc_security_group_ids = concat([aws_security_group.ecs_nodes.id], var.security_group_ids)
+  vpc_security_group_ids = concat(list(aws_security_group.ecs_nodes.id), var.security_group_ids)
 
   user_data = base64encode(data.template_file.userdata.rendered)
-
-  key_name = var.ec2_key_enabled ? aws_key_pair.generated_key[0].key_name : null
 
   lifecycle {
     create_before_destroy = true
