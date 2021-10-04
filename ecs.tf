@@ -1,3 +1,3 @@
 resource "aws_ecs_cluster" "ecs" {
-  name = "${var.name}-win"
+  name = "${var.name}"
 }

@@ -1,10 +1,10 @@
 resource "aws_security_group" "ecs_nodes" {
-  name        = "ecs-${var.name}-win-nodes"
+  name        = "ecs-${var.name}-nodes"
   description = "SG for ECS nodes"
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "ecs-${var.name}-win-nodes"
+    Name = "ecs-${var.name}-nodes"
   }
 }
 

@@ -1,12 +1,12 @@
 resource "aws_security_group" "alb" {
   count = var.alb ? 1 : 0
 
-  name        = "ecs-${var.name}-win-lb"
+  name        = "ecs-${var.name}-lb"
   description = "SG for ECS ALB"
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "ecs-${var.name}-win-lb"
+    Name = "ecs-${var.name}-lb"
   }
 }
 
