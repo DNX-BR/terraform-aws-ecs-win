@@ -3,7 +3,7 @@ resource "aws_lb" "ecs" {
 
   load_balancer_type         = "application"
   internal                   = false
-  name                       = "ecs-${var.name}-win"
+  name                       = "ecs-${var.name}"
   subnets                    = var.public_subnet_ids
   drop_invalid_header_fields = var.alb_drop_invalid_header_fields
   enable_deletion_protection = var.alb_enable_deletion_protection
