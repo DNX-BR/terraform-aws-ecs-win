@@ -3,7 +3,7 @@ resource "aws_fsx_windows_file_system" "ecs" {
   kms_key_id     = var.kms_key_arn != "" ? var.kms_key_arn : null
   storage_capacity    = 32
   subnet_ids      = list(element(var.secure_subnet_ids, count.index))
-  throughput_capacity = 1
+  throughput_capacity = 8
 
 
   security_group_ids = aws_security_group.fsx[0].id
