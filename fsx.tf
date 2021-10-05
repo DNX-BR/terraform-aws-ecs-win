@@ -51,5 +51,5 @@ resource "aws_security_group_rule" "fsx_from_fsx_to_world" {
   to_port                  = -1
   protocol                 = "all"
   security_group_id        = aws_security_group.fsx[0].id
-  source_security_group_id = ["0.0.0.0/0"]
+  cidr_blocks       = ["0.0.0.0/0"]
 }
